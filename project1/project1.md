@@ -413,5 +413,3 @@ You may notice the sign that says **Not secure**. Next, you'll use certbot to ob
 ---
 
 #### The End Of Project 1
-
-If you encounter any errors or need assistance at any stage of the project, feel free to contact me via [**LinkedIn**](https://www.linkedin.com/in/jamillah-bello/). I'm here to help.
