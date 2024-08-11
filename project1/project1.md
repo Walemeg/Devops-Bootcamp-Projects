@@ -392,8 +392,8 @@ You may notice the sign that says **Not secure**. Next, you'll use certbot to ob
 ### Install certbot and Request For an SSL/TLS Certificate
 
 - Install certbot by executing the following commands:
-`sudo apt update`
-`sudo apt install certbot python3-certbot-nginx`
+**`sudo apt update`**
+**`sudo apt install certbot python3-certbot-nginx`**
 
 ![36](img/36.png)
 
