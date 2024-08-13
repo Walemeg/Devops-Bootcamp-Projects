@@ -22,11 +22,11 @@ The goal of the project is to have a fully deployed and secure static website re
 
 - Locate and click on **EC2** within the AWS management console.
 
-![1](img/1.png)
+![alt text](<img/1 EC2.PNG>)
 
 - Click on **Launch Instance**
 
-![2](img/2.png)
+![alt text](<img/2 Launch EC2.PNG>)
 
 - **Name** your instance and select the **Ubuntu** AMI.
 
