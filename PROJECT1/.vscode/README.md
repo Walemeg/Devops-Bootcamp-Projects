@@ -30,110 +30,64 @@ The goal of the project is to have a fully deployed and secure static website re
 
 - **Name** your instance and select the **Ubuntu** AMI.
 
-![3](img/3.png)
+![alt text](<img/3 Ubuntu AMI.PNG>)
 
 - Click the **Create new key pair** button to generate a key pair for secure connection to your instance.
-
-![4](img/4.png)
-
 - Enter a **Key pair name** and click on **Create key pair**.
 
-![5](img/5.png)
+![alt text](<img/4 create key pair.PNG>)
+
+
 
 - Enable **SSH**, **HTTP**, and **HTTPS** access, then proceed to click **Launch instance**.
 
-![6](img/6.png)
+![alt text](<img/5 SSH HTTP.PNG>)
 
-> [!NOTE]
-For security reasons, it's recommended to restrict SSH access to your IP address only. However, for the purpose of this documentation, access has been granted from anywhere.
 
-- Click on **View all instances**.
+- Click on **View all instances** and **created instance**.
 
-![view instance](img/view-instance.png)
+![alt text](<img/7 created instance.PNG>)
 
-- Click on the **created instance**.
-
-![7](img/7.png)
 
 - Click on the **Connect** button.
 
-![8](img/8.png)
+![alt text](<img/8 Connect to instance.PNG>)
 
 - Copy the command provided under **`SSH client`**.
 
-![9](img/9.png)
+![alt text](<img/9 SSH Client.PNG>)
 
 - Open a terminal in the directory where your **`.pem`** file was downloaded, paste the command and press Enter.
 
-![10](img/10.png)
+![alt text](<img/10 Open terminal.PNG>)
 
----
-
-**How to open a terminal in your downloads folder on windows:**
-
-- Navigate to your downloads folder (or the folder where you saved your .pem file), right-click, and choose **Open in terminal**.
-
-![OT](img/open-terminal.gif)
-
-**How to open the Terminal in a specific folder where your EC2 instance key pair (.pem file) was downloaded on a Mac:**
-
-1. **Using Finder:**
-   - Open **Finder** and navigate to the folder where your `.pem` file is located (usually the Downloads folder).
-   - Right-click (or Control-click) on the folder.
-   - Select **Services** from the context menu, then choose **New Terminal at Folder**. (If you don’t see this option, you might need to enable it in **System Preferences** under **Keyboard** > **Shortcuts** > **Services**.)
-
-2. **Using Terminal with Drag and Drop:**
-   - Open **Terminal** from Spotlight or Finder.
-   - In Finder, navigate to the folder where your `.pem` file is located.
-   - Drag the folder (or the `.pem` file) into the open Terminal window. This will automatically populate the Terminal with the path to that folder.
-   - If you dragged the folder, you can type `cd ` (with a space) before dropping it to change into that directory. For example: `cd /Users/yourusername/Downloads/` (after dragging, it will show the complete path).
-
-3. **Using the `cd` Command:**
-   - Open **Terminal**.
-   - Use the `cd` command to navigate to the folder where your `.pem` file is located. For example, if your key pair is in the Downloads folder, type:
-
-    ```
-     cd ~/Downloads
-    ```
-
-   - Press `Enter` to execute the command.
-
-After following any of these methods, your Terminal will be opened in the directory where your `.pem` file is located, and you can use it to execute commands related to your EC2 instance.
-
----
 
 ### Create And Assign an Elastic IP
 
-- Return to your AWS console and click on the **menu icon** to open the dashboard menu.
+- Return to your AWS console and click on the **menu icon** to open the dashboard menu. Select **Elastic IPs** under **Network & Security**.
 
-![dm](img/bring-dashboard.png)
-
-- Select **Elastic IPs** under **Network & Security**.
-
-![11](img/11.png)
+![alt text](<img/11-12 Elastic ip.PNG>)
 
 - Click on the **Allocate Elastic IP address** button.
 
-![12](img/12.png)
+![alt text](<img/13 Allocate IP address.PNG>)
 
 - Keep the settings unchanged and proceed to click **Allocate**.
 
-![13](img/13.png)
+![alt text](<img/14 allocate.PNG>)
 
 - **Associate this Elastic IP address** with your running instance.
 
-![14](img/14.png)
+![alt text](<img/15 Associate the public address with instance.PNG>)
 
 - Select the instance you wish to associate with the elastic IP address, then click on **Associate**.
 
-![15](img/15.png)
+![alt text](<img/16 select instance to be associated with elastic ip.PNG>)
 
 > [!NOTE]
-The IP address for your instance has been updated to the elastic IP associated with it. Therefore, you will need to SSH into your instance again. Return to the connection page of your instance and copy the new command.
+Because IP address for my instance has been updated to the elastic IP associated with it. I will need to SSH into my instance again and paste the **command** into your terminal and then press Enter. When prompted, type **"yes"** and press Enter to connect.
 
-- Paste the **command** into your terminal and then press Enter. When prompted, type **"yes"** and press Enter to connect.
-
-![16](img/16.png)
+![alt text](<img/17 ssh into new instance with elastic IP address.PNG>)
 
 ---
 
@@ -142,22 +96,22 @@ The IP address for your instance has been updated to the elastic IP associated w
 - Execute the following commands.
 
 `sudo apt update`
-
 `sudo apt upgrade`
-
 `sudo apt install nginx`
 
-- Start your Nginx server by running the **`sudo systemctl start nginx`** command, enable it to start on boot by executing **`sudo systemctl enable nginx`**, and then confirm if it's running with the **`sudo systemctl status nginx`** command.
+- I used  **`sudo systemctl start nginx`** command for starting my Nginx server.  
+- I used **`sudo systemctl enable nginx`** for enabling the server to start on boot.
+- I used **`sudo systemctl status nginx`** command to confirm if it's running.
 
-![17](img/17.png)
+![alt text](<img/18 Nginx installed.PNG>)
 
 - Go back to your EC2 dashboard and copy your **Public IPv4 address**.
 
-![ip](img/ip-address.png)
+![alt text](<img/19 copied IPv4 address.PNG>)
 
 - Visit your instances **Public IPv4 address** in a web browser to view the default Nginx startup page.
 
-![18](img/18.png)
+![alt text](<img/20 instance Public IPv4 address in web browser.PNG>)
 
 - Download your website template from your preferred website by navigating to the website, locating the template you want, and obtaining the download URL for the website.
 
