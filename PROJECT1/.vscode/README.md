@@ -188,11 +188,9 @@ To make your website accessible via your domain name rather than the IP address,
 
 - Select the **created hosted zone①** and copy the assigned **Values②**.
 
-![28](img/28.png)
+![alt text](<img/28 nameservers in domain.PNG>)
 
 - Go back to your domain registrar and select **Custom DNS** within the **NAMESERVERS** section.
-
-![alt text](<img/28 nameservers in domain.PNG>)
 
 - Paste the values you copied from Route 53 into the appropriate fields in your domain.
 
