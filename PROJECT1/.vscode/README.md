@@ -4,11 +4,11 @@ The goal of the project is to have a fully deployed and secure static website re
 
 ### In this project, I will be:
 
- Building with Nginx: I'll set up Nginx as my web server, the engine that delivers my website content to the world.
+- Building with Nginx: I'll set up Nginx as my web server, the engine that delivers my website content to the world.
 
- Connecting with Route53: I'll configure Amazon Route53, the DNS service that directs visitors to your website's location.
+- Connecting with Route53: I'll configure Amazon Route53, the DNS service that directs visitors to your website's location.
 
- Securing with Certbot: I'll implement HTTPS encryption using Certbot, ensuring a safe and secure connection for your website.
+- Securing with Certbot: I'll implement HTTPS encryption using Certbot, ensuring a safe and secure connection for your website.
 
 By the end of this project, I'll have a fully deployed and secure static website
 
@@ -67,7 +67,7 @@ By the end of this project, I'll have a fully deployed and secure static website
 
 ![alt text](<img/9 SSH Client.PNG>)
 
-- I opened a terminal and located the folder where my **`.pem`** file was downloaded, I used the CD command to move to the folder and pressed Enter.
+- I opened a terminal and located the folder where my **`.pem`** file was downloaded, I used the CD command to move to the folder, and pressed Enter. I also pasted the copied the command provided under **`SSH client`**
 
 ![alt text](<img/10 Open terminal.PNG>)
 
@@ -123,7 +123,7 @@ Because IP address for my instance has been updated to the elastic IP associated
 
 ![alt text](<img/20 instance Public IPv4 address in web browser.PNG>)
 
-- I downloaded my "Mini Finance" website template from www.tooplate.com
+### Next ; I downloaded my "Mini Finance" website template from www.tooplate.com
 
 
 ---
