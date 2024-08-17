@@ -115,78 +115,55 @@ Because IP address for my instance has been updated to the elastic IP associated
 
 - Download your website template from your preferred website by navigating to the website, locating the template you want, and obtaining the download URL for the website.
 
-![tpd](img/tooplate-download.gif)
 
 ---
 
-**How to obtain the website template URL from tooplate.com:**
+**How to I obtained the website template URL from tooplate.com:**
 
 - Visit [**Tooplate**](https://www.tooplate.com/) and select the website template you prefer.
 
-![tp1](img/tp1.png)
+![alt text](<img/21a website template from tooplate.PNG>)
 
 - Scroll down to the download section, right-click to open the menu, and select **Inspect** from the options.
 
-![tp2](img/tp2.png)
-
 - Select the **Network** tab.
-
-![tp3](img/tp3.png)
 
 - Click the **Download** button.
 
-![tp4](img/tp4.png)
-
 - You’ll see the **website zip folder** appear. Hover your mouse or trackpad pointer over it and right-click again.
 
-![tp5](img/tp5.png)
+![alt text](<img/21b website template download.PNG>)
 
-> [!NOTE]
-Make sure you right-click on the zip folder, the one that says **.zip**. If it doesn't appear after clicking download, try clicking the download button again until it shows up, as shown in the picture.
-
-- Hover your mouse cursor over **Copy①** and then click on **Copy URL②** from the list that appears on the right.
-
-![tp6](img/tp6.png)
 
 - Paste the URL into a notebook to use alongside the **`curl`** command when downloading the website content to your machine.
 
-![tp7](img/tp7.png)
+![alt text](<img/21c notepad.PNG>)
 
 ---
 
 - Run this command **`sudo curl -o /var/www/html/2137_barista_cafe.zip https://www.tooplate.com/zip-templates/2137_barista_cafe.zip`** to download the websites file to your html directory.
 
-![19](img/19.png)
+![alt text](<img/22 curl command for website template.PNG>)
 
-> [!NOTE]
-The **`curl`** command is a utility for making HTTP requests via the command line. Here, it's utilized to retrieve a file from a specified URL.
-The **`-o`** flag designates the output file or destination. In this instance, it signifies that the downloaded file, named **"2137_barista_cafe.zip"**, should be stored in the **"/var/www/html/"** directory.
-The URL **`https://www.tooplate.com/zip-templates/2137_barista_cafe.zip`** is the source for downloading the file. Make sure to replace it with the URL of your own website template. Curl will retrieve the content located at this URL.
 
 - To install the unzip tool, run the following command: **`sudo apt install unzip`**.
 
 - Navigate to the web server directory by running the following command: **`cd /var/www/html`**.
 
-![cd](img/cd.png)
+- Unzip the contents of your website by running **`sudo unzip 2135_mini_finance.zip`**.
 
-- Unzip the contents of your website by running **`sudo unzip <website template name>`**.
+![alt text](<img/23 install unzip tool_unzip template.PNG>)
 
-![20](img/20.png)
-
-> [!NOTE]
-Replace **`<website template name>`** with the actual name of your website zip file. For example, mine is **2137_barista_cafe.zip** so i ran **`sudo unzip 2137_barista_cafe.zip`**.
 
 - Update your nginx configuration by running the command **`sudo nano /etc/nginx/sites-available/default`**. Then, edit the **`root`** directive within your server block to point to the directory where your downloaded website content is stored.
 
-![default root directive](img/drd.png)
-
-![nrd](img/nrd.png)
+![alt text](<img/23 update nginx config with nano.PNG>)
 
 - Restart Nginx to apply the changes by running: **`sudo systemctl restart nginx`**.
 
 - Open a web browser and go to your **Public IPv4 address/Elastic IP address** to confirm that your website is working as expected.
 
-![21](img/21.png)
+![alt text](<img/23c web browser test with my Public IPv4 address or Elastic IP address.PNG>)
 
 ---
 
@@ -194,32 +171,20 @@ Replace **`<website template name>`** with the actual name of your website zip f
 
 To make your website accessible via your domain name rather than the IP address, you'll need to set up a DNS record. I did this by buying my domain from Namecheap and then moving hosting to AWS Route 53, where I set up an A record.
 
-> [!NOTE]
-Your domain registrar's interface might look different, but they all follow a similar basic layout.
+![alt text](<img/24 Domain name.PNG>)
 
-- On the website click on **Domain List**.
-
-![22](img/22.png)
-
-- Click on the **Manage** button.
-
-![23](img/23.png)
 
 - Go back to your AWS console, search for **Route 53①**, and then choose **Route 53②** from the list of services shown.
 
-![24](img/24.png)
-
-- Click on **Get started**.
-
-![25](img/25.png)
+![alt text](<img/25 Route 53.PNG>)
 
 - Select **Create hosted zones①** and click on **Get started②**.
 
-![26](img/26.png)
+![alt text](<img/26 Create Hosted Zone.PNG>)
 
 - Enter your **Domain name①**, choose **Public hosted zone②** and then click on **Create hosted zone③**.
 
-![27](img/27.png)
+![alt text](<img/27 Hosted Zone details.PNG>)
 
 - Select the **created hosted zone①** and copy the assigned **Values②**.
 
@@ -227,42 +192,41 @@ Your domain registrar's interface might look different, but they all follow a si
 
 - Go back to your domain registrar and select **Custom DNS** within the **NAMESERVERS** section.
 
-![29](img/29.png)
+![alt text](<img/28 nameservers in domain.PNG>)
 
-- Paste the values you copied from Route 53 into the appropriate fields, then click the **checkmark symbol** to save the changes.
+- Paste the values you copied from Route 53 into the appropriate fields in your domain.
 
-![30](img/30.png)
+![alt text](<img/28b nameservers in domain website.PNG>)
 
 - Head back to your AWS console and click on **Create record**.
+- Paste your Elastic IP address and then click on **Create records** for root domian
 
-![31](img/31.png)
-
-- Paste your Elastic IP address and then click on **Create records**.
-
-![32](img/32.png)
+![alt text](<img/28c creating record in root domain_.PNG>)
 
 - Your A record has been successfully created.
 
-![33](img/33.png)
+![alt text](<img/28d Record created in root domain.PNG>)
 
 - Click on **create record** again, to create the record for your sub domain.
 
 - Input the Record name(**www➀**), paste your **IP address➁**, and then click on **Create records➂**.
 
-![sub a record](img/sub-a-record.png)
+![alt text](<img/29 creating record in subdomain.PNG>)
+
+![alt text](<img/29b Record created in sub domain.PNG>)
 
 > [!NOTE]
-Make sure to create DNS records for both your root domain and subdomain. This involves setting up an A record for the root domain (e.g., **`example.com`**) and another A record for the subdomain (e.g., **`www.example.com`**). These records will direct traffic to your server's IP address, ensuring that both your main site and any subdomains are accessible.
+I make sure to create DNS records for both my root domain and subdomain. This involves setting up an A record for the root domain (e.g., **`example.com`**) and another A record for the subdomain (e.g., **`www.example.com`**). These records will direct traffic to my server's IP address, ensuring that both my main site and any subdomains are accessible.
 
 - Open your terminal and run **`sudo nano /etc/nginx/sites-available/default`** to edit your settings. Enter your domain and subdomain names, then save the changes.
 
-![34](img/34.png)
+![alt text](<img/30 nano to edit your settings _ input domain and subdomain names.PNG>)
 
 - Restart your nginx server by running the **`sudo systemctl restart nginx`** command.
 
 - Go to your domain name in a web browser to verify that your website is accessible.
 
-![35](img/35.png)
+![alt text](<img/31 domain name in a web browser.PNG>)
 
 > [!NOTE]
 You may notice the sign that says **Not secure**. Next, you'll use certbot to obtain the SSL certificate necessary to enable HTTPS on your site.
@@ -275,19 +239,19 @@ You may notice the sign that says **Not secure**. Next, you'll use certbot to ob
 **`sudo apt update`**
 **`sudo apt install certbot python3-certbot-nginx`**
 
-![36](img/36.png)
-
 - Execute the **`sudo certbot --nginx`** command to request your certificate. Follow the instructions provided by certbot and select the domain name for which you would like to activate HTTPS.
 
-![37](img/37.png)
+![alt text](<img/32 Install certbot.PNG>)
 
-- Verify the website's SSL using the OpenSSL utility with the command: **`openssl s_client -connect jaykaneki.cloud:443`**
+![alt text](<img/33 Request For an SSL_TLS Certificate.PNG>)
 
-![38](img/38.png)
+- Verify the website's SSL using the OpenSSL utility with the command: **`openssl s_client -connect qserver.space:443`**
 
-- Visit **`https://<domain name>`** to view your website.
+![alt text](<img/34 Verify the website's SSL.PNG>)
 
-![39](img/39.png)
+- Visit **`https://qserver.space`** to view your website.
+
+![alt text](<img/35 final secured website.PNG>)
 
 ---
 ---
