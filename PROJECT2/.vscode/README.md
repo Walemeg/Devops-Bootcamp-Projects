@@ -2,17 +2,8 @@
 
 The goal is to learn the concept of subdomains and hosting multiple websites on a single server using Nginx Virtual Host configuration.
 
-### In this project, I will be:
 
-- Building with Nginx: I'll set up Nginx as my web server, the engine that delivers my website content to the world.
-
-- Connecting with Route53: I'll configure Amazon Route53, the DNS service that directs visitors to your website's location.
-
-- Securing with Certbot: I'll implement HTTPS encryption using Certbot, ensuring a safe and secure connection for your website.
-
-By the end of this project, I'll have a fully deployed and secure static website
-
-## Below are the respective task for Project 1
+### Below are the respective task for the Project 
 
 |S/N | Project Tasks                                                                   |
 |----|---------------------------------------------------------------------------------|
@@ -28,26 +19,15 @@ By the end of this project, I'll have a fully deployed and secure static website
 - Task 10: Validate the subdomain websites’ SSL using OpenSSL utility.      |
 
 
-### Create An Ubuntu Server
+## Task-1 
+### Spin up a Ubuntu server and assign an elastic IP to it
 
-- I searched and clicked on **EC2** within the AWS management console.
-
-![alt text](<img/1 EC2.PNG>)
-
-- I clicked on **Launch Instance**
-
-![alt text](<img/2 Launch EC2.PNG>)
+- I clicked on **EC2** within the AWS management console and  **Launch Instance**
 
 - I **Named** my instance and selected the **Ubuntu** AMI.
 
-![alt text](<img/3 Ubuntu AMI.PNG>)
-
 - I clicked the **Create new key pair** button to generate a key pair for secure connection to my instance.
 - I entered a **Key pair name** and clicked on **Create key pair**.
-
-![alt text](<img/4 create key pair.PNG>)
-
-
 
 - I enabled **SSH**, **HTTP**, and **HTTPS** access, then proceeded to click **Launch instance**.
 
@@ -94,8 +74,11 @@ By the end of this project, I'll have a fully deployed and secure static website
 
 ![alt text](<img/16 select instance to be associated with elastic ip.PNG>)
 
-> [!NOTE]
-Because IP address for my instance has been updated to the elastic IP associated with it. I SSH it into my instance again and paste the **command** into my terminal and then press Enter. When prompted, I type **"yes"** and press Enter to connect.
+
+## Task 2: 
+### SSH into the server and install and configure Nignx on a server.
+
+ I SSH it into my instance again and paste the **command** into my terminal and then press Enter. When prompted, I type **"yes"** and press Enter to connect.
 
 ![alt text](<img/17 ssh into new instance with elastic IP address.PNG>)
 
@@ -123,64 +106,54 @@ Because IP address for my instance has been updated to the elastic IP associated
 
 ![alt text](<img/20 instance Public IPv4 address in web browser.PNG>)
 
-### Next ; I downloaded my "Mini Finance" website template from www.tooplate.com]
+## Task 3, 4 & 5
+### Create two website directories with two different website templates and two subdomains
 
-
----
-
-**How to I obtained "Mini Finance" website template URL from tooplate.com:**
-
-- I visited [**Tooplate**](https://www.tooplate.com/) and selected "Mini Finance"
-
-![alt text](<img/21a website template from tooplate.PNG>)
+- I downloaded two website template URL from tooplate.com; "waso_strategy" and "Wedding Lite"
 
 - I Scrolled down to the download section, right-clicked to open the menu, and selected **Inspect** from the options.
 
 - I Selected the **Network** tab.
 
-- Clicked the **Download** button.
-
-- I saw the **"Mini Finance" zip folder** appear and I right-click again.
-
-![alt text](<img/21b website template download.PNG>)
-
-
-- I pasted the URL into a notebook to use alongside the **`curl`** command when downloading the website content to my machine.
-
-![alt text](<img/21c notepad.PNG>)
+- Clicked the **Download** button and did the needful.
 
 I repeated the same thing for the 2nd website
 
+
+Waso Strategy
+![alt text](<img/21b Waso strategy website template download.PNG>)
+
+Wedding Lite
+![alt text](<img/21c wedding lite website template download.PNG>)
+
+The two websites template details
+![alt text](<img/21d notepad.PNG>)
+
 ---
 
--To install the unzip tool, run the following command: sudo apt install unzip.
-Execute the command to download and unzip your website files sudo curl -o /var/www/html/2098_health.zip https://www.tooplate.com/zip-templates/2098_health.zip && sudo unzip -d /var/www/html/ /var/www/html/2098_health.zip && sudo rm -f /var/www/html/2098_health.zip.
+- To install the unzip tool, I ran the command : sudo apt install unzip.
+
+- To execute the command to download and unzip my website files I ran command for the two website templates
+  
+1. "sudo curl -o /var/www/html/2130_waso_strategy.zip https://www.tooplate.com/zip-templates/2130_waso_strategy.zip && sudo unzip -d /var/www/html/ /var/www/html/2130_waso_strategy.zip && sudo rm -f /var/www/html/2130_waso_strategy.zip" and  
+2. sudo curl -o /var/www/html/2131_wedding_lite.zip https://www.tooplate.com/zip-templates/2131_wedding_lite.zip && sudo unzip -d /var/www/html/ /var/www/html/2131_wedding_lite.zip && sudo rm -f /var/www/html/2131_wedding_lite.zip
 
 
-Here's an explanation of the command:
-The command sudo curl -o /var/www/html/2098_health.zip https://www.tooplate.com/zip-templates/2098_health.zip && sudo unzip -d /var/www/html/ /var/www/html/2098_health.zip && sudo rm -f /var/www/html/2098_health.zip performs a series of actions to download, unzip, and clean up a website template file. Here’s a breakdown of each part of the command:
-1.sudo curl -o /var/www/html/2098_health.zip https://www.tooplate.com/zip-templates/2098_health.zip:
-osudo: Runs the command with superuser (root) privileges.
-ocurl -o /var/www/html/2098_health.zip: Downloads the file from the specified URL (https://www.tooplate.com/zip-templates/2098_health.zip) and saves it as 2098_health.zip in the /var/www/html directory.
-2.&&: Logical AND operator, which ensures that the next command runs only if the previous command succeeds.
-3.sudo unzip -d /var/www/html/ /var/www/html/2098_health.zip:
-osudo: Runs the command with superuser (root) privileges.
-ounzip -d /var/www/html/: Extracts the contents of the zip file into the /var/www/html/ directory.
-o/var/www/html/2098_health.zip: Specifies the path to the zip file to be unzipped.
-4.&&: Logical AND operator, which ensures that the next command runs only if the previous command succeeds.
-5.sudo rm -f /var/www/html/2098_health.zip:
-osudo: Runs the command with superuser (root) privileges.
-orm -f: Removes (deletes) the specified file forcefully (without prompting for confirmation).
-o/var/www/html/2098_health.zip: Specifies the path to the zip file to be deleted.
-In summary, this command downloads the website template file, extracts its contents to the web server directory, and then deletes the downloaded zip file to clean up the directory.
+- Next, I created two sub-domain records in AWS for the two website template downloaded the websites accessible via domain name rather than the IP address.  
+The IP of the server was also added as A record to the two subdomains
+After creating the records, I confirmed that they both exist in the records list as shown below.
 
-Download the 2nd website template by running the following command:
-sudo curl -o /var/www/html/2132_clean_work.zip https://www.tooplate.com/zip-templates/2132_clean_work.zip && sudo unzip -d /var/www/html/ /var/www/html/2132_clean_work.zip && sudo rm -f /var/www/html/2132_clean_work.zip
 
-Note : Replace the placeholders in the code with your own website URL. For example, substitute https://www.tooplate.com/zip-templates/2132_clean_work.zip with your chosen URL, and change 2132_clean_work.zip accordingly.
-To set up your website's configuration, start by creating a new file in the Nginx sites-available directory. Use the following command to open a blank file in a text editor: sudo nano /etc/nginx/sites-available/cleaning
+![alt text](<img/22 two domains created in AWS.PNG>)
 
-Copy and paste the following code into the open text editor.
+
+## Task 6 & 7: 
+### Configure the Virtual host to point two subdomains to two different website directories and validate the setup by accessing the subdomains.
+
+- To set up my website's configuration, I started by creating a new file in the Nginx sites-available directory. 
+- I used the command below to open a blank file in a text editor: *sudo nano /etc/nginx/sites-available/waso*
+
+- I copied and pasted the following code below into the open text editor.
 server {
     listen 80;
     server_name example.com www.example.com;
@@ -192,86 +165,70 @@ server {
         try_files $uri $uri/ =404;
     }
 }
-Edit the root directive within your server block to point to the directory where your downloaded website content is stored.
 
-Configure your second website by creating a new file in the Nginx sites-available directory with the following command: sudo nano /etc/nginx/sites-available/health.
+- I edited the server name and root directive within your my block to point to the directory where my] downloaded website content is stored.
+I repeated same process for the second website as shown below.
 
-Copy and paste the following code into the open text editor.
-server {
-    listen 80;
-    server_name placeholder.com www.placeholder.com;
+Waso_Strategy website configuration
+![alt text](<img/24a 1st website configuration.PNG>)
 
-    root /var/www/html/placeholder.com;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-}
+Wedding_lite website configuration
+![alt text](<img/24b 2nd website configuration.PNG>)
 
 
-Edit the root directive within your server block to point to the directory where your downloaded website content is stored.
+- I created symbolic link for both websites by running the following command. 
+1. *sudo ln -s /etc/nginx/sites-available/cleaningwaso /etc/nginx/sites-enabled/*
+2. *sudo ln -s /etc/nginx/sites-available/wedding /etc/nginx/sites-enabled/*
+
+- I ran the *sudo nginx -t* command to check the syntax of the Nginx configuration file.
+
+*Note : When I ran the test, it initially failed but after removing the unecessary files as indicated from teh error prompt, it eventually passed as shown in the picture below.
+
+- I deleted the default files in the sites-available and sites-enabled directories by executing the following commands:
+1. *sudo rm /etc/nginx/sites-available/default*
+2. *sudo rm /etc/nginx/sites-enabled/default*
+
+- I restarted the Nginx server by executing the command: *sudo systemctl restart nginx*.
+
+![alt text](<img/25a creating symbolic link website.PNG>)
+
+![alt text](<img/25b removing unwanted files in server _ re-testing.PNG>)
+
+- I put my domain names in a web browser to verify that my website is accessible (though still not secure) as shown below.
+
+waso_strategy unsecure website
+![alt text](<img/26a waso unsecure website.PNG>)
+
+wedding lite unsecure website
+![alt text](<img/26b wedding unsecure website.PNG>)
 
 
+##  Task 8 , 9 and 10 
+### Create a certbot SSL certificate for the root Domain, Configure certbot on Nginx and validate the subdomain websites’ SSL using OpenSSL utility.
+ 
+Next, I use certbot to obtain the SSL certificate necessary to enable HTTPS on my site.
+
+- I install certbot and Request For an SSL/TLS Certificate by executing the following commands: 
+1. *sudo apt update sudo apt install python3-certbot-nginx*
+2. *sudo certbot --nginx*
+
+- I executed the *sudo certbot --nginx* command to request my certificate and followed the instructions provided by certbot. I selected my domian names for which I would like to activate HTTPS.
+
+![alt text](<img/27 Install python &request for certificate.PNG>)
+
+- I Verified the the two websites' SSL using the OpenSSL utility with the command: *openssl s_client -connect cleaning.cloudghoul.online:443*
+
+![alt text](<img/28a verify waso website SSL.PNG>)
+
+![alt text](<img/28b verify wedding website SSL.PNG>)
+
+#### I visted the below to view my secured website.
+
+### https://waso.qserver.space 
+![alt text](<img/29a Final secure website test.PNG>)
 
 
-
-
-Create a symbolic link for both websites by running the following command. sudo ln -s /etc/nginx/sites-available/cleaning /etc/nginx/sites-enabled/ sudo ln -s /etc/nginx/sites-available/health /etc/nginx/sites-enabled/
-
-Run the sudo nginx -t command to check the syntax of the Nginx configuration file.
-Delete the default files in the sites-available and sites-enabled directories by executing the following commands:
-sudo rm /etc/nginx/sites-available/default
-sudo rm /etc/nginx/sites-enabled/default
-Restart the Nginx server by executing the following command: sudo systemctl restart nginx.
-
-
-
-Create An A Record
-To make your website accessible via your domain name rather than the IP address, you'll need to set up a DNS record. I did this by buying my domain from Namecheap and then moving hosting to AWS Route 53, where I set up an A record.
-Note
-Visit Project1 for instructions on how to create a hosted zone.
-In route 53, select the domain name and click on Create record.
-
-Paste your IP address① and then click on Create records②.
-
-
-
-
-
-
-Click on Create record again, to create the record for your sub domain.
-
-Input the Record name①, paste your IP address② and then click on Create records③.
-
-
-
-
-Repeat the same process while creating your second subdomain record, and confirm that they both exist in the records list.
-
-Open your terminal and run sudo nano /etc/nginx/sites-available/cleaning to edit your settings. Enter the name of your domain and then save your settings.
-
-
-Run sudo nano /etc/nginx/sites-available/health to edit your settings. Enter the name of your domain and then save your settings.
-
-Restart your nginx server by running the sudo systemctl restart nginx command.
-Go to your domain name in a web browser to verify that your website is accessible.
-
-
-Note
-You may notice the sign that says Not secure. Next, you'll use certbot to obtain the SSL certificate necessary to enable HTTPS on your site.
-
-Install certbot and Request For an SSL/TLS Certificate
-Install certbot by executing the following commands: sudo apt update sudo apt install python3-certbot-nginx sudo certbot --nginx
-
-Execute the sudo certbot --nginx command to request your certificate. Follow the instructions provided by certbot and select the domain name for which you would like to activate HTTPS.
-
-[NOTE] In this case, SSL certificates were only created for cleaning.cloudghoul.online and health.cloudghoul.online. So, when prompted, I entered the numbers 1 and 3 (corresponding to those two domains) to select them for certificate generation. If we had also created records for www.cleaning.cloudghoul.online and www.health.cloudghoul.online, I could have simply pressed Enter to accept the default selection (all available records). If you try to create a certificate without having created an A record first, you will receive an error message.
-Verify the website's SSL using the OpenSSL utility with the command: openssl s_client -connect cleaning.cloudghoul.online:443
-
-Visit https://<domain name> to view your websites.
-
-
-
+### https://wedding.qserver.space
+![alt text](<img/29b Final secure website test.PNG>)
 
 The End Of Project 2
