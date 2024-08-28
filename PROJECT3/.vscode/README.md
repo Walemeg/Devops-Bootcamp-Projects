@@ -191,7 +191,8 @@ Wedding_lite website configuration
 
 ![alt text](<img/25a creating symbolic link website.PNG>)
 
-![alt text](<img/25b removing unwanted files in server _ re-testing.PNG>)
+
+#
 
 - I put my webservers IPv4 address in a web browser to verify that my website is up and running.
 
