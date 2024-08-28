@@ -28,14 +28,6 @@ The load balancing function will be observed when the domain name is inserted in
 7)	Try accessing the website. Every time you reload the website you should see a different index.html.
 
 
-#### Key Concepts Covered
-- AWS (EC2 and Route 53)
-- EC2
-- Linux(Ubuntu)
-- Nginx
-- DNS , Load balancing
-- SSL (certbot) and OpenSSL command
-
 
 
 ## TASK 1 
@@ -77,6 +69,11 @@ The load balancing function will be observed when the domain name is inserted in
 - I select each of the instance I wish to associate with each of the elastic IP address, and then clicked on **Associate**; one instanace at a time.
 
 ![alt text](<img/16 select instance to be associated with elastic ip.PNG>)
+
+
+- All Instances associated to respective IP Addresses
+
+![alt text](<img/all Elastic IP.PNG>)
 
 
 - I clicked on the **Connect** button for each of the instances and Copied the command provided under **`SSH client`**. I copied it into my notepad for reference
