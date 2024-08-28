@@ -1,5 +1,5 @@
-# Project 3
-# Setup Load Balancing for Static Website Using Nignx
+# PROJECT 3
+# SETUP LOAD-BALANCING FOR STATIC WEBSITE USING NGINX
 
 
 The goal of the project is to demonstrate Layer 7 load balancing and load balancing algorithms using Nginx as a Load Balancer.
@@ -12,7 +12,7 @@ The load balancing function will be observed when the domain name is inserted in
 
 
 
-### 	Project Tasks
+### 	PROJECT TASKS
 1) Deploy three servers
 
 2) Set up static websites on two servers using Nginx.
