@@ -103,62 +103,57 @@ I installed Apache, run the following commands together in my terminal.
 
 ### STEP 2: Install MYSQL
 
-- To install this software using 'apt', run the command **`sudo apt install mysql-server`**. When prompted, confirm the installation by typing 'Y' and then pressing ENTER.
+- I proceeded to install mysql software by running the command **`sudo apt install mysql-server`**. 
 
-![9](img/9.png)
+![alt text](<img/4a install MSQL.PNG>)
 
-- After the installation is complete, log in to the MySQL console by typing: **`sudo mysql`**.
+- After the installation is complete, I logged in to the MySQL console by typing: **`sudo mysql`**.
+- Inorder to enhance security, I ran the following security script command included with MySQL; I set the password for the root user with the MySQL native password authentication method: **`ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass';`**. Exit the MySQL shell when you're done by typing **`exit`**.
 
-> [!NOTE]
-It's recommended that you run a security script included with MySQL to enhance security. Before running the script, set a password for the root user using the default authentication method **mysql_native_password**. For this project, we'll define the password as "**pass**", but you can choose any password you prefer.
+![alt text](<img/4b logging on to msql console and setting security password.PNG>)
 
-- Run the following command to set the password for the root user with the MySQL native password authentication method: **`ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass';`**. Exit the MySQL shell when you're done by typing **`exit`**.
 
-![10](img/10.png)
+- I proceeded to mysql secure installation by executing the interactive script: **`sudo mysql_secure_installation`** which involves Setting my **password validation policy level** as shown below
 
-- Start the interactive script by running: **`sudo mysql_secure_installation`①**. Answer **y**② for yes, or any other key to continue without enabling specific options.
+![alt text](<img/4c msql secure installation_validation policy.PNG>)
 
-![11](img/11.png)
 
-- Set your **password validation policy level**.
+- I enabled MySQL to start on boot by executing **`sudo systemctl enable mysql`①**, and then confirm its status with the **`sudo systemctl status mysql`②** command.
 
-![12](img/12.png)
-
-> [!NOTE]
-I set my password validation policy level to 0 because I don't require much security, as I will be terminating all resources immediately after this project. However, on the job, it's advised to use the strongest level, which is 2.
-
-- Enable MySQL to start on boot by executing **`sudo systemctl enable mysql`①**, and then confirm its status with the **`sudo systemctl status mysql`②** command.
-
-![13](img/13.png)
+![alt text](<img/4d enabling msql to start on boot & confirm status.PNG>)
 
 ---
 
-### Install PHP
+### STEP 3: Install PHP
 
-- Install PHP along with required extensions by running the following script: **`sudo apt install php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip`**.
+- Next, I installed "PHP" along with required extensions by running the following script:
 
-![14](img/14.png)
+**`sudo apt install php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip`**.
+
+![alt text](<img/5a install php & required extensions.PNG>)
 
 **`sudo apt install php libapache2-mod-php php-mysql`**
 
-![15](img/15.png)
+![alt text](<img/5b install php & required extensions2.PNG>)
 
-- Confirm the downloaded PHP version by running **`php -v`**.
+- Then I confirmed the downloaded PHP version by running **`php -v`**.
 
-![16](img/16.png)
+![alt text](<img/5c php installation confirmation.PNG>)
 
-### Creating A Virtual Host For Your Website Using Apache
 
-- Create the directory for Projectlamp using the 'mkdir' command as follows:
-**`sudo mkdir /var/www/projectlamp`①** and assign ownership of the directory to our current system user using:
-**`sudo chown -R $USER:$USER /var/www/projectlamp`②**.
+### STEP 4: Create A Virtual Host For Your Website Using Apache
 
-![17](img/17.png)
+- I started by Creating a directory for Projectlamp using the 'mkdir' command as follows:
+**`sudo mkdir /var/www/projectlamp`** , I assign ownership of the directory to our current system user using:
+**`sudo chown -R $USER:$USER /var/www/projectlamp`**.
 
-- Create and open a new configuration file in Apache's sites-available directory using your preferred command-line editor:
+![alt text](<img/6a create dir & assign ownership for project lamp.PNG>)
+
+- I created and opened a new configuration file in Apache's sites-available directory using "vi" command-line editor
+
 **`sudo vi /etc/apache2/sites-available/projectlamp.conf`**.
 
-- Creating this will produce a new blank file. Paste the configuration text provided below into it:
+- It showed a new blank file, inside which I pasted the configuration text below. I save my changes by pressing the **`Esc`** key, then type **`:wq`** and press **`Enter`**.:
 
 ```
 <VirtualHost *:80>
@@ -178,93 +173,66 @@ CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
 
-![18](img/18.png)
+![alt text](<img/6b Ceate new configuration in Apache.PNG>)
 
-- Save your changes by pressing the **`Esc`** key, then type **`:wq`** and press **`Enter`**.
 
-![19](img/19.png)
+- I ran the floowing commands after creating the new file:
+i) To confirm that the projectlamp ocnfig file was succesfully created in the sites-available directory, I ran the ls command **`sudo ls /etc/apache2/sites-available`** 
 
-- Run the ls command **`sudo ls /etc/apache2/sites-available`①** to show the **new file②** in the sites-available directory.
+ii) I enabled the new virtual host using the a2ensite command **`sudo a2ensite projectlamp`**.
 
-![20](img/20.png)
+iii) I disabled Apache's default website, use the a2dissite command. Type: **`sudo a2dissite 000-default`**.
 
-- We can now enable the new virtual host using the a2ensite command: **`sudo a2ensite projectlamp`**.
+iv) To ensure my configuration file doesn’t contain syntax errors, I ran **`sudo apache2ctl configtest`**. I saw **"Syntax OK"** in the output of my configuration, which means it is correct.
 
-![21](img/21.png)
+v) Lasdtly, I ran **`sudo systemctl reload apache2`** to reload Apache for the changes to take effect.
 
-- To disable Apache's default website, use the a2dissite command. Type: **`sudo a2dissite 000-default`**.
+![alt text](<img/6c list new file_reload & test ASpache config_disable default website.PNG>)
 
-![22](img/22.png)
 
-- To ensure your configuration file doesn’t contain syntax errors, run: **`sudo apache2ctl configtest`**. You should see **"Syntax OK"** in the output if your configuration is correct.
+> #### Testing the virtual host
+ 
+ I want to test that the virtual host works as expected.
+ To do that I will first create an **`index.html`** file in the web root location **`/var/www/projectlamp`**. (take note that even though my new website is now active, the web root **`/var/www/projectlamp`** is still empty) 
 
-![23](img/23.png)
+- I use the following command: **`sudo echo 'Hello LAMP from Jay' > /var/www/projectlamp/index.html`**. to create the **index.html** file with the content **"Hello LAMP from Adewale"** in the /var/www/projectlamp directory, 
 
-- Finally run: **`sudo systemctl reload apache2`**. This will reload Apache for the changes to take effect.
+![alt text](<img/6d creating index.html file with content Hello LAMP from Adewale.PNG>)
 
-> [!NOTE]
-Our new website is now active, but the web root **`/var/www/projectlamp`** is still empty. Let's create an **`index.html`** file in that location to test that the virtual host works as expected.
+- I opened my web browser , accessed my website using the IP address:
 
-- To create the **index.html** file with the content **"Hello LAMP from Jay"** in the /var/www/projectlamp directory, use the following command: **`sudo echo 'Hello LAMP from Jay' > /var/www/projectlamp/index.html`**.
+**`http://172.31.81.179:80`**
 
-![24](img/24.png)
+![alt text](<img/6e testing the content created thru website.PNG>)
 
-- Now, let's open our web browser and try to access our website using the IP address:
 
-**`http://<EC2-Public-IP-Address>:80`**
+- I removed the index.html file by running the following command: **`sudo rm /var/www/projectlamp/index.html `**
 
-> [!NOTE]
-Replace **`<EC2-Public-IP-Address>`** with your actual EC2 instance's public IP address.
+> ### Enable PHP On The Website
 
-![25](img/25.png)
+To enable PHP on teh website, I had to to edit the dir.conf file inorder to change the precedence of index files (such as index.php over index.html) in Apache. (Note in the default DirectoryIndex settings on Apache, a file named index.html will always take precedence over an index.php file)  
 
-- Remove the index.html file by running the following command: **`sudo rm /var/www/projectlamp/index.html `**
+- To edit the dir.conf file, I used a text editor "nano"
+ **`sudo nano /etc/apache2/mods-enabled/dir.conf`**
 
-### Enable PHP On The Website
+- I went to the DirectoryIndex directive within this file which is as shown below and I changed it by prioritizing **index.php** over **index.html**, by moving **index.php** to the beginning of the list, like this:
 
-With the default DirectoryIndex settings on Apache, a file named index.html will always take precedence over an index.php file. To change the precedence of index files (such as index.php over index.html) in Apache, you'll need to edit the dir.conf file. Here’s how you can do it:
-
-- Edit the dir.conf file using a text editor (such as nano or vi): **`sudo nano /etc/apache2/mods-enabled/dir.conf`**
-
-- Look for the DirectoryIndex directive within this file. It typically looks like this:
-
+- Existing directive : 
 ```
 <IfModule mod_dir.c>
     DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm
 </IfModule>
 ```
+- Edited directive 
 
-- To prioritize **index.php** over **index.html**, move **index.php** to the beginning of the list, like this:
+![alt text](<img/6d enabling PHPM on website by making it first priority.PNG>)
 
-```
-<IfModule mod_dir.c>
-    DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
-</IfModule>
-```
+- I reloaded Apache for the changes to take effect using **`sudo systemctl reload apache2`**.
 
-![26](img/26.png)
 
-- Press **`ctrl` + `x`①** on your keyboard to save and exit.
+- Next is to create a new file named index.php inside my custom web root folder (/var/www/projectlamp), which I did with the following command to open it in the nano text editor: **`nano /var/www/projectlamp/index.php`**.
 
-![27](img/27.png)
-
-- Type **`y`②** to save the changes.
-
-![28](img/28.png)
-
-- When prompted to confirm the file name, simply press **`ENTER`③** to save the changes with the existing file name.
-
-![29](img/29.png)
-
-- Finally, reload Apache for the changes to take effect: **`sudo systemctl reload apache2`**.
-
-![30](img/30.png)
-
-Now, Apache will prioritize index.php over index.html when both files exist in the same directory.
-
-- To create a new file named index.php inside your custom web root folder (/var/www/projectlamp), you can use the following command to open it in the nano text editor: **`nano /var/www/projectlamp/index.php`**.
-
-- This will create a new file. Copy and paste the following PHP code into the new file:
+- Then I copied and pasted the following PHP code into the new file and saved:
 
 ```
 <?php
@@ -272,24 +240,20 @@ Now, Apache will prioritize index.php over index.html when both files exist in t
 phpinfo();
 ```
 
-![31](img/31.png)
+![alt text](<img/6f Creating a new file_index.php inside root folder var.PNG>)
 
-- Once you've saved and closed the file, go back to your web browser and refresh the page. You should see something like this:
+- I went to my web browser and refresh the page and I got the below
 
-![32](img/32.png)
+![alt text](<img/6g refresh web browser to give server info from php.PNG>)
 
-> [!NOTE]
-This page provides information about your server from the perspective of PHP. It is useful for debugging and to ensure that your settings are being applied correctly.
 
-If you can see this page in your browser, then congratulations🎉 your PHP installation is working as expected.
-After verifying the relevant information about your PHP server through that page, it's recommended to remove the file you created, as it contains sensitive information about your PHP environment and your Ubuntu server. You can use the rm command to do so:
+- I removed the file I created as recommended since it contains sensitive information about my PHP environment and my Ubuntu server. 
 **`sudo rm /var/www/projectlamp/index.php`**.
 
-You can always recreate this page if you need to access the information again later.
 
 ---
 
-### Install Wordpress
+### TASK-3 INSTALL AND CONFIGURE WORDPRESS APPLICATION
 
 After setting up our LAMP environment, we can start installing WordPress. First, we'll download the WordPress installation files and place them in the default web server root directory: **/var/www/html**.
 
