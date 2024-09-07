@@ -458,9 +458,13 @@ Below is my result
 ### Install certbot and Request For an SSL/TLS Certificate
 
 - In order to secure my website, I ran the three commands below to Install certbot and request my SSL/TLS certificate:
+
 i) `sudo apt update`
+
 ii) `sudo apt install certbot python3-certbot-apache`
+
 iii) `sudo certbot --apache` to request my SSL/TLS certificate. 
+
 
 ![alt text](<img/11d Install certbot and Request For an SSL Certificate.PNG>)
 
