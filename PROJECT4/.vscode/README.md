@@ -47,7 +47,7 @@ PHP is the scripting language in the LAMP stack. It's responsible for generating
 
 ## DOCUMENTATION
 
-### TASK-1 DEPLOY AN UBUNTU SERVER 
+### TASK-1 : DEPLOY AN UBUNTU SERVER 
 - An Unbuntu server named "lamp stack was first launced as shown below.
 
 ![alt text](<img/1 Launch Instance.PNG>)
@@ -75,9 +75,9 @@ I also specified the source as /32
 ![alt text](<img/3 ssh to terminal.PNG>)
 
 
-### TASK-2 SETUP LAMP STACK ON THE SERVER 
+### TASK-2 : SETUP LAMP STACK ON THE SERVER 
 
-### STEP 1:  Install Apache
+### STEP-1 :  Install Apache
 
 I installed Apache, run the following commands together in my terminal.
 
@@ -253,170 +253,152 @@ phpinfo();
 
 ---
 
-### TASK-3 INSTALL AND CONFIGURE WORDPRESS APPLICATION
+### TASK-3 : INSTALL AND CONFIGURE WORDPRESS APPLICATION
 
-After setting up our LAMP environment, we can start installing WordPress. First, we'll download the WordPress installation files and place them in the default web server root directory: **/var/www/html**.
+### STEP 1: Installation of Wordpress
 
-- Navigate to the directory using the cd command **`cd /var/www/html`**, and then download the WordPress installation files using the following command: **`sudo wget -c http://wordpress.org/latest.tar.gz`**
+The next thing I did after setting up my LAMP environment is the installation of WordPress. 
+First, I downloaded the WordPress installation files and place them in the default web server root directory: **/var/www/html**.
 
-![33](img/33.png)
+- I navigated to the directory using the cd command **`cd /var/www/html`**, and then I downloaded the WordPress installation files using the following command: 
 
-- Extract the files from the downloaded WordPress archive using the command: **`sudo tar -xzvf latest.tar.gz`**
+**`sudo wget -c http://wordpress.org/latest.tar.gz`**
 
-![34](img/34.png)
+![alt text](<img/7a WordPress files download.PNG>)
 
-- Run the command **`ls -l`** to confirm the existence of the **wordpress** directory in the current location (`/var/www/html`).
+- I extracted the files from the downloaded WordPress archive using the command: 
+**`sudo tar -xzvf latest.tar.gz`**
 
-![35](img/35.png)
+![alt text](<img/7b extraction of wordpress downloaded files.PNG>)
 
-> [!NOTE]
-The files must be owned by the user of your web server. Identify the web server's user and assign the appropriate permissions accordingly. The user **`www-data`** is widely adopted as the default user for web server processes, especially on Ubuntu and Debian systems. This user oversees the operation of web server software (like Apache or Nginx) and manages incoming web requests. However, for verification and for tasks involving services that may not have a predefined user, checking the user of the web server is advisable.
+- I ran the command **`ls -l`** to confirm the creation of the **wordpress** directory in the current location (`/var/www/html`).
 
-- Check the user running your web server with the command: **`ps aux | grep apache | grep -v grep`**.
+![alt text](<img/7c wordpress dir created.PNG>)
 
-![36](img/36.png)
+> Identifying default web server's user and assigning of appropriate permissions.
+It is advisable to check the user of the web server (and ensure it has necessary permissions) for verification and tasks involving services that may not have a predefined user.
+The user **`www-data`** is widely adopted as the default user for web server processes, (especially on Ubuntu and Debian systems) which oversees the operation of web server software (like Apache or Nginx) and manages incoming web requests. 
 
-*This command filters processes related to Apache (apache2 on Ubuntu) and displays information about the user running those processes.*
+- I checked the user running my web server with the command: 
+**`ps aux | grep apache | grep -v grep`**.
 
-- Grant ownership of the WordPress directory and its files to the web server user **(www-data)** by running the command: **`sudo chown -R www-data:www-data /var/www/html/wordpress`**.
+- As expected I could see the user "www-data" and I assigned ownership of the WordPress directory and its files to the web server user **(www-data)** by running the command: 
+**`sudo chown -R www-data:www-data /var/www/html/wordpress`**.
 
-![37](img/37.png)
+![alt text](<img/7d www-data _default user for webserver_ assigns ownership.PNG>)
 
-### Create a Database For Wordpress
 
-- Access your MySQL root account with the following command: **`sudo mysql -u root -p`①**. Enter the **password②** you set earlier when prompted.
 
-![38](img/38.png)
+### STEP 2: Create a Database For Wordpress
 
-- To create a separate database named wp_db for WordPress to manage, execute the following command in the MySQL prompt: **`CREATE DATABASE wp_db;`**
+- I first accessed my MySQL root account with the following command: **`sudo mysql -u root -p`** , then I entered the **password** "pass" that I set earlier when prompted.
 
-![39](img/39.png)
+- Then I created a separate database named wp_db for WordPress to manage, execute the following command in the MySQL prompt: **`CREATE DATABASE wp_db;`**
 
-> [!NOTE]
-This command allows you to create a new database (**wp_db**) within your MySQL environment. Feel free to name it as you prefer.
+- To access the new database, I created MySQL user account with a strong password using the following command:
+**`CREATE USER walemeg@localhost IDENTIFIED BY 'walemeg-password';`**
 
-- To access the new database, you can create a MySQL user account with a strong password using the following command:
-**`CREATE USER jay@localhost IDENTIFIED BY 'wp-password';`**
-
-![40](img/40.png)
-
-*Replace 'wp-password' with your preferred strong password for the MySQL user account.*
-
-- To grant your created user (jay@localhost) all privileges needed to work with the wp_db database in MySQL, use the following commands:
+- The next thing I did is to grant my created user (walemeg@localhost) all privileges needed to work with the wp_db database in MySQL, use the following commands:
 
 ```
-GRANT ALL PRIVILEGES ON wp_db.* TO jay@localhost;
+GRANT ALL PRIVILEGES ON wp_db.* TO walemeg@localhost;
 FLUSH PRIVILEGES;
 ```
 
-![41](img/41.png)
+![alt text](<img/7e access msql root account_create separate database wp_dp _create user for new db_ grant user all privileges.PNG>)
 
-> [!NOTE]
-This grants all privileges **(ALL PRIVILEGES)** on all tables within the wp_db database **(`wp_db.*`)** to the user jay when accessing from localhost. The FLUSH PRIVILEGES command ensures that MySQL implements the changes immediately. Adjust the database name **(wp_db)** and username **(jay)** as per your setup.
 
-- Type **`exit`** to exit the MySQL shell.
+- I typed **`exit`** to exit the MySQL shell and I granted executable permissions recursively (-R) to the wordpress folder using the following command: **`sudo chmod -R 777 wordpress/`**
 
-![42](img/42.png)
+This command sets 777 permissions for read (r), write (w), and execute (x) permissions for the owner, group, and others on all files and directories within the wordpress folder.
 
-- Grant executable permissions recursively (-R) to the wordpress folder using the following command: **`sudo chmod -R 777 wordpress/`**
+![alt text](<img/7f Grant executable permissions recursively to the wordpress folder & check.PNG>)
 
-![43](img/43.png)
 
-> [!NOTE]
-This command sets read (r), write (w), and execute (x) permissions for the owner, group, and others on all files and directories within the wordpress folder. Using 777 permissions is quite permissive and may not be necessary for all files and folders; consider adjusting permissions based on security requirements.
 
-- Change into the WordPress directory by running the command: **`cd wordpress`**.
+### STEP 2: Configure Wordpress
 
-![44](img/44.png)
+Once I've established a database for WordPress, the next crucial step is setting up and configuring WordPress itself. I started by renaming the sample wordpress config to wordpress config and then I created a configuration file tailored for WordPress.
+\
+- I change into the WordPress directory by running the command: **`cd wordpress`**.
 
-### Configure Wordpress
+- I rename the sample WordPress configuration file with the command: **`mv wp-config-sample.php wp-config.php`**.
 
-Once you've established a database for WordPress, the next crucial step is setting up and configuring WordPress itself. To begin, you'll need to create a configuration file tailored for WordPress.
+- I edited the **`wp-config.php`** file using the command: **`sudo nano wp-config.php`**.
 
-- Rename the sample WordPress configuration file with the command: **`mv wp-config-sample.php wp-config.php`**.
+![alt text](<img/8a configure worpress_rename and edit exising confid.PNG>)
 
-- Edit the **`wp-config.php`** file using the command: **`sudo nano wp-config.php`**.
+- I update the database settings in the **`wp-config.php`** file by replacing placeholders **database_name_here**, **username_here**, and **password_here** with my actual database details.
 
-![45](img/45.png)
+![alt text](<img/8b Update the database settings in the wp-config.php file.PNG>)
 
-- Update the database settings in the **`wp-config.php`** file by replacing placeholders like **database_name_here**, **username_here**, and **password_here** with your actual database details.
+- I modified the configuration file projectlamp.conf by using command: 
+**`sudo nano /etc/apache2/sites-available/projectlamp.conf`** to update the document root to the directory where your WordPress installation is located. I updated the document root to **`/var/www/html`** , I saved and exited
 
-![46](img/46.png)
+![alt text](<img/8c Modify the configuration file projectlamp.conf.PNG>)
 
-- Modify the configuration file projectlamp.conf: **`sudo nano /etc/apache2/sites-available/projectlamp.conf`** to update the document root to the directory where your WordPress installation is located.
+- I reloaded Apache for the changes to take effect: **`sudo systemctl reload apache2`**.
 
-![47](img/47.png)
+- I proceeded to access your WordPress page to complete the installation. I opened my web browser and went to **`http://54.175.204.158/wordpress/`**. It lead me to the WordPress setup wizard where you can finalize the installation process.
 
-- After updating the document root to **`/var/www/html`** directory in your editor, save the changes and exit.
+- I selected my preferred language and then click on **Continue** to proceed.
 
-![48](img/48.png)
+![alt text](<img/9a IP address+wordpress in browser.PNG>)
 
-- Reload Apache for the changes to take effect: **`sudo systemctl reload apache2`**.
 
-- Once you've completed these steps, you can access your WordPress page to complete the installation. Open your web browser and go to **`http://<EC2 IP>/wordpress/`**. This will lead you to the WordPress setup wizard where you can finalize the installation process.
+- I entered the required information and click on **Install WordPress** once you have finished as shown below.
 
-> [!NOTE]
-Replace **<EC2 IP>** with the IP address of your EC2 instance when accessing your WordPress page.
 
-- Select your preferred language and then click on **Continue** to proceed.
+![alt text](<img/9b personal wordpress details.PNG>)
 
-![49](img/49.png)
 
-- Enter the required information and click on **Install WordPress** once you have finished.
+- WordPress was been successfully installed and I log in to my admin dashboard using the previously set up information by clicking the **Log In** button with my username and password.
+The result is the "welcome to wordpress"page
 
-  - **Site Title①:** Enter the name of your WordPress website. It's recommended to use your domain name for better optimization.
-  - **Username②:** Choose a username for logging into WordPress.
-  - **Password③:** Set a secure password to protect your WordPress account.
-  - **Your email④:** Provide your email address to receive updates and notifications.
-  - **Search engine visibility⑤:** You can leave this box unchecked to prevent search engines from indexing your site until it's ready.
+![alt text](<img/9C fresh login.PNG>)
 
-![50](img/50.png)
+"welcome to wordpress" page
 
-- WordPress has been successfully installed. You can now log in to your admin dashboard using the previously set up information by clicking the **Log In** button.
-
-![51](img/51.png)
-
-- Enter your username and password, then click **Log In** to access your WordPress admin dashboard.
-
-![52](img/52.png)
-
-- Once you successfully log in, you will be greeted by the WordPress dashboard page.
-
-![53](img/53.png)
+![alt text](<img/9d wordpress page.PNG>)
 
 ---
 
-### Create An A Record
+### TASK-4 : MAP IP ADDRESS TO A DNS RECORD 
 
-To make your website accessible via your domain name rather than the IP address, you'll need to set up a DNS record. I did this by buying my domain from Namecheap and then moving hosting to AWS Route 53, where I set up an A record.
+### STEP 1: Create Records
 
-> [!NOTE]
-Visit [**Project1**](https://github.com/StrangeJay/devops-beginner-bootcamp/blob/main/project1/project1.md) for instructions on how to create a hosted zone.
+In order to make my website accessible via your domain name rather than the IP address, I set up a DNS record. I did this by buying my domain from Namecheap and then moving hosting to AWS Route 53, where I set up an A record.
 
-- Point your domain's DNS records to the IP addresses of your Apache load balancer server.
 
-- In route 53, click on **Create record**.
+- I went to "hosted zone" under route 53. I clicked on my existing hosted zone "qserver.space"
 
-![54](img/54.png)
+![alt text](<img/10a hosted zone.PNG>)
 
-- Paste your **IP address➀** and then click on **Create records➁** to create the root domain.
+- I clicked on record to point my domain's DNS records to the IP addresses of my Apache load balancer server.
 
-![55](img/55.png)
+![alt text](<img/10b click create record1.PNG>)
 
-- Click on **Create record** again, to create the record for your sub domain.
+- I pasted my **IP address** and then click on **Create records➁** to create the root domain.
 
-![56](img/56.png)
+![alt text](<img/10c create record_ root domain.PNG>)
 
-- Paste your IP address➀, input the Record name(**www➁**) and then click on **Create records**➂.
+- I clicked on **Create record** again, to create the record for my sub domain. I pasted my IP address, input the Record name(**www**) and then clicked on **Create records**.
 
-![57](img/57.png)
+![alt text](<img/10d create record_ sub domain.PNG>)
 
-- To update your Apache configuration file in the sites-available directory to point to your domain name, use the command: **`sudo nano /etc/apache2/sites-available/projectlamp.conf`**.
 
-> [!NOTE]
-This command opens the **`projectlamp.conf`** file in the nano text editor with superuser privileges **(`sudo`)**. Within the editor, adjust the necessary details to reflect your domain name configuration.
+Record fully created
 
-- Ensure that the server settings in your Apache configuration point to your domain name, and that the document root accurately points to your WordPress directory. Once you've made these adjustments, save the changes and exit the editor.
+![alt text](<img/10e record fully created.PNG>)
+
+
+### STEP 2 : Update Apache configuration file to point to domain
+
+- After creating records, I updated my Apache configuration file in the sites-available directory so that it can point to my domain name.
+I use the command:
+ **`sudo nano /etc/apache2/sites-available/projectlamp.conf`**.
+
+- I adjust the necessary details Within the editor to reflect my domain name configuration. i.e the server settings in your Apache configuration point to my domain name, and that the document root accurately points to your WordPress directory. after which I save the changes and exit the editor.
 
 ```
 <VirtualHost *:80>
@@ -438,13 +420,14 @@ This command opens the **`projectlamp.conf`** file in the nano text editor with 
 
 ```
 
-![58](img/58.png)
+![alt text](<img/10f update Apache configuration_to point to your domain name.PNG>)
 
-> [!NOTE]
-The new configuration defines how Apache should handle requests for your domain, and its subdomain. With this configuration: Apache will handle requests for **cloudghoul.online** and **www.cloudghoul.online**. Files will be served from the **`/var/www/html/wordpress`** directory. Directory listings and symbolic links are allowed. The directory can be accessed by any client.
-Error logs will be written to **`/var/log/apache2/error.log`**. Access logs will be written to **`/var/log/apache2/access.log`** in the combined log format.
 
-- To update your **`wp-config.php`** file with DNS settings, use the following command: **`sudo nano wp-config.php`** and add these lines to the file:
+***The new configuration above defines how Apache should handle requests for my domain, and its subdomain. With this configuration: Apache will handle requests for **qserver.space** and **www.qserver.space**. Files will be served from the **`/var/www/html/wordpress`** directory. Directory listings and symbolic links are allowed. The directory can be accessed by any client.***
+
+***Error logs will be written to **`/var/log/apache2/error.log`**. Access logs will be written to **`/var/log/apache2/access.log`** in the combined log format***
+
+- Next I updated my **`wp-config.php`** file with DNS settings, I use the following command: **`sudo nano wp-config.php`** and added these lines below to the file:
 
 ```
 /** MY DNS SETTINGS */
@@ -453,46 +436,41 @@ define('WP_HOME', 'http://<domain name>');
 define('WP_SITEURL', 'http://<domain name>');
 ```
 
-Replace **`http://<domain name>`** with your actual domain name. Save the changes and exit the editor.
+Replace **`http://<domain name>`** with my actual domain name. I save the changes and exit the editor.
 
-![59](img/59.png)
+![alt text](<img/10g update your wp-config.php file with DNS settings.PNG>)
 
-- Reload your Apache server to apply the changes with the command: **`sudo systemctl reload apache2`**, After reloading, visit your website at **`http://<domain name>`** to view your WordPress site. Replace **<domain name>** with your actual domain name.
 
-![60](img/60.png)
+### TASK-5 : VALIDATE THE WORDPRESS WEBSITE SETUP BY ACCESSING THE WEB ADDRESS
 
-- To log in to your WordPress admin portal, visit **`http://<domain name>/wp-admin`**, Enter your **username①** and **password②**, then click on **log In③**. *Replace **<domain name>** with your actual domain name.*
+- I reloaded my Apache server to apply the changes with the command: **`sudo systemctl reload apache2`**, After reloading, I visited your website at **`http://54.175.204.158`** to view my WordPress site. 
 
-![61](img/61.png)
+- I log on to your WordPress admin portal, visit **`http://qserver.space/wp-admin`**, entered my **username** and **password**, then clicked on **log In**. 
+Below is my result
 
-> [!NOTE]
-My domain name is **cloudghoul.online**, so i'll visit **`http://cloudghoul.online/wp-admin`**.
+![alt text](<img/11b wordpress with domain name.PNG>)
 
-- Now that your WordPress site is successfully configured to use your domain name, the next step is to secure it by requesting an SSL/TLS certificate.
+![alt text](<img/11c wordpress fully configured with domain name.PNG>)
 
-![62](img/62.png)
 
 ---
 
 ### Install certbot and Request For an SSL/TLS Certificate
 
-- Install certbot by executing the following commands:
-`sudo apt update`
-`sudo apt install certbot python3-certbot-apache`
+- In order to secure my website, I ran the three commands below to Install certbot and request my SSL/TLS certificate:
+i) `sudo apt update`
+ii) `sudo apt install certbot python3-certbot-apache`
+iii) `sudo certbot --apache` to request my SSL/TLS certificate. 
 
-- Run the command **`sudo certbot --apache`** to request your SSL/TLS certificate. Follow the instructions provided by Certbot to select the domain name for which you want to enable HTTPS.
+![alt text](<img/11d Install certbot and Request For an SSL Certificate.PNG>)
 
-![63](img/63.png)
 
-- You should receive a message confirming that the certificate has been successfully obtained.
+- I visited my website to confirm, and I notice that the **"not secure"** warning no longer appears, indicating that my site is now secure with HTTPS.
 
-![64](img/64.png)
+![alt text](<img/11e secured wordpress fully configured with domain name.PNG>)
 
-- Visit your website to confirm, and you'll notice that the **"not secure"** warning no longer appears, indicating that your site is now secure with HTTPS.
 
-![65](img/65.png)
-
-![66](img/66.png)
+![alt text](<img/11f secured wordpress fully configured with domain name.PNG>)
 
 ---
 ---
