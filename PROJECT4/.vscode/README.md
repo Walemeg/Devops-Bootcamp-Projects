@@ -443,7 +443,7 @@ Replace **`http://<domain name>`** with my actual domain name. I save the change
 
 ### TASK-5 : VALIDATE THE WORDPRESS WEBSITE SETUP BY ACCESSING THE WEB ADDRESS
 
-- I reloaded my Apache server to apply the changes with the command: **`sudo systemctl reload apache2`**, After reloading, I visited your website at **`http://54.175.204.158`** to view my WordPress site. 
+- I reloaded my Apache server to apply the changes with the command: **`sudo systemctl reload apache2`**, After reloading, I visited your website at **`http://qserver.space`** to view my WordPress site. 
 
 - I log on to your WordPress admin portal, visit **`http://qserver.space/wp-admin`**, entered my **username** and **password**, then clicked on **log In**. 
 Below is my result
