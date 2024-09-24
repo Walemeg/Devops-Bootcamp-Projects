@@ -1,5 +1,5 @@
 # PROJECT TITLE : 
-## TO SETUP A STATIC WEBSITE USING NGINX
+# SETTING UP A STATIC WEBSITE USING NGINX
 
 The goal of the project is to host a fully deployed and secure static website.
 
@@ -31,8 +31,6 @@ By the end of this project, I'll have a fully deployed and secure static website
 ### Step-by-step work flow
 ---------------------------
 
-
-![alt text](<img/Project picture3.PNG>)
 
 #### Step 1: Launch AWS Instance
 Purpose: Create a virtual server to host your website.
