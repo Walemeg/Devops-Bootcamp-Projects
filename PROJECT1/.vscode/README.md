@@ -1,6 +1,22 @@
-# PROJECT TITLE : To Setup a Static Website Using Nginx
+# PROJECT TITLE : 
+## TO SETUP A STATIC WEBSITE USING NGINX
 
-The goal of the project is to have a fully deployed and secure static website ready !
+The goal of the project is to host a fully deployed and secure static website.
+
+A static website is a type of website that:
+
+1. Displays pre-built, fixed content
+2. Doesn't require database interactions
+3. Doesn't change dynamically based on user input
+4. Uses HTML, CSS, and JavaScript files that are stored on the server
+5. Loads content directly from files, without server-side processing
+
+
+![alt text](<img/Project picture.PNG>)
+
+
+
+Examples of a static website include Personal blogs , Portfolios , Landing pages , Business brochures , Event websites
 
 ### In this project, I will be:
 
@@ -12,9 +28,90 @@ The goal of the project is to have a fully deployed and secure static website re
 
 By the end of this project, I'll have a fully deployed and secure static website
 
-## Below are the respective task for Project 1
+### Step-by-step work flow
+---------------------------
 
-|S/N | Project Tasks                                                                   |
+
+![alt text](<img/Project picture3.PNG>)
+
+#### Step 1: Launch AWS Instance
+Purpose: Create a virtual server to host your website.
+
+- Create AWS account
+- Launch EC2 instance (e.g., Ubuntu)
+- Choose instance type (e.g., t2.micro)
+
+
+#### Step 2: Install Nginx
+Purpose: Install web server software to serve your website.
+
+- Connect to EC2 instance via SSH
+- Install Nginx using package manager (e.g., apt-get)
+- Start Nginx service
+
+
+#### Step 3: Download HTML Website Files
+Purpose: Obtain pre-designed HTML templates for your website.
+
+- Visit TemplateKit or other template websites
+- Download free HTML website files
+- Extract files to a directory (e.g., /var/www/html)
+
+
+#### Step 4: Configure Nginx
+Purpose: Set up Nginx to serve your static website files.
+
+- Create a new Nginx configuration file (e.g., sudo nano /etc/nginx/sites-available/default)
+- Update server block to point to website directory
+- Restart Nginx service
+
+
+#### Step 5: Copy Website Files to Nginx Directory
+Purpose: Move HTML files to Nginx website directory.
+
+- Copy website files to /var/www/html
+- Ensure file permissions are set correctly
+
+
+#### Step 6: Validate Website using Server IP
+Purpose: Test website accessibility using the server's public IP address.
+
+- Get EC2 instance public IP address
+- Access website using IP address (e.g., http://18.222.123.456)
+- Verify website is working correctly
+
+
+#### Step 7: Assign Elastic IP
+Purpose: Obtain a static IP address for your AWS instance.
+
+- Create an Elastic IP address
+- Associate Elastic IP with EC2 instance
+
+
+#### Step 8: Configure Amazon Route 53
+Purpose: Set up DNS for your website using Amazon Route 53.
+
+- Create a hosted zone in Route 53
+- Create an A record pointing to Elastic IP
+- Update nameservers (if necessary)
+
+
+#### Step 9: Create A Record in Route 53
+Purpose: Map domain name to Elastic IP.
+
+- Create an A record in Route 53
+- Point A record to Elastic IP address
+
+
+#### Step 10: Verify DNS Setup
+Purpose: Ensure website accessibility via domain name.
+
+- Verify website is accessible via domain name
+
+
+## Below are the respective task for the Project
+
+|S/N | Specific Project Tasks                                                                   |
 |----|---------------------------------------------------------------------------------|
 | 1  |Buy a domain name from a domain Registrar                                        |
 | 2  |Spin up an Ubuntu server & assign an elastic IP to it                            |
