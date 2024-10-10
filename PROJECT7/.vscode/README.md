@@ -3,9 +3,13 @@
 
 ### PROJECT OVERVIEW
 
-A VPC (Virtual Private Cloud) in AWS (Amazon Web Services) is a service that allows you to launch AWS resources in a logically isolated virtual network that you define.
+A VPC is a virtual network that can contain EC2 instances as well as network resources for other AWS services. By default, every VPC is isolated from all other networks. A VPC can exist only within an AWS region. When you create a VPC in a region, it won’t show up in any other regions.
 
-This project aims to design and implement a secure, scalable, and highly available VPC infrastructure on Amazon Web Services (AWS) for a specified region (us-west-2) with multiple Availability Zones (us-west-2a, us-west-2b, us-west-2c). The VPC will have 15 subnets, one per Availability Zone, and will utilize an Internet Gateway, NAT Gateway, route tables, and Network ACLs for secure communication.
+You control various aspects of your Amazon VPC, including selecting your own IP address range; creating your own subnets; and configuring your own route tables, network gateways, and security settings.
+
+Note: You can have 100s of VPCs per Region for your needs even though the default quota is 5 VPCs per Region.
+
+****This project**** aims to design and implement a secure, scalable, and highly available VPC infrastructure on Amazon Web Services (AWS) for a specified region (us-west-2) with multiple Availability Zones (us-west-2a, us-west-2b, us-west-2c). The VPC will have 15 subnets, one per Availability Zone, and will utilize an Internet Gateway, NAT Gateway, route tables, and Network ACLs for secure communication.
 
 
 
@@ -17,31 +21,141 @@ This project aims to design and implement a secure, scalable, and highly availab
 3. Implement Internet Gateway and NAT Gateway for internet access.
 
 
+##### Typical VPC Architectures
+
+![alt text](<img/VPC pix 3.PNG>)
+
+![alt text](<img/VPC pix1.PNG>)
+
+![alt text](<img/VPC pix3.JPG>)
+
+
 - ### Project Components
 
- Here are the key components and features of an AWS VPC:
+ key components and features of an AWS VPC:
 
-1) Subnets: A VPC can be divided into multiple subnets, which are sections of the VPC IP address range where you can place groups of isolated resources. Subnets can be either public (with access to the internet) or private (isolated from the internet).
 
-2) IP Addressing: You can choose your own IP address range for the VPC using IPv4 or IPv6 addresses.
+#### 1) Internet Gateway:
 
-3) Route Tables: Control the routing of network traffic within the VPC and between subnets. You can create custom route tables to direct traffic as needed.
+An Internet Gateway (IGW) is a logical connection between an Amazon VPC and the Internet.   
+It is not a physical device and Only one can be associated with each VPC.   
+When we create IGW, it will not be attached to the VPC automatically, we need to explicitly attach it to the VPC.
+If a VPC does not have an Internet Gateway, then the resources in the VPC cannot be accessed from the Internet.   
+It does not limit the bandwidth of Internet connectivity. (The only limitation on bandwidth is the size of the Amazon EC2 instance, and it applies to all traffic — internal to the VPC and out to the Internet.)
 
-4) Internet Gateway: A VPC component that allows communication between instances in your VPC and the internet. You need to attach an Internet Gateway to a VPC to enable internet access for your instances.
+#### 2) AWS Router: 
+Each AWS VPC has a VPC router.   
+The primary function of this VPC router is to take all of the route tables defined within that VPC and then direct the traffic flow within that VPC, as well as to subnets outside of the VPC, based on the rules defined within those tables.
 
-5) NAT Gateway and NAT Instances: These allow instances in a private subnet to connect to the internet or other AWS services without exposing themselves to incoming traffic from the internet.
+#### - Route Table and how does it work?
 
-6) Security Groups: Act as virtual firewalls for your instances to control inbound and outbound traffic at the instance level.
+A set of rules, called routes, are used to determine where network traffic is directed.   
+A route table is used to determine where network traffic from your subnet or gateway is directed. In simple terms, the route table tells network packets which way they need to go to get to their destination.   
+A subnet can only be associated with one route table at a time, but you can associate multiple subnets with the same subnet route table.   
+Every route table contains a local route for communication within the VPC. This route is added by default to all route tables.
 
-7) Network ACLs (Access Control Lists): Provide an additional layer of security, controlling traffic at the subnet level.
 
-8) VPC Peering: Allows you to connect one VPC with another VPC to route traffic between them using private IP addresses.
+Main route table :  
+The first entry is the default entry for local routing in the VPC.   
+This entry enables the instances in the VPC to communicate with each other over IPv4.
+The second entry routes all other IPv4 subnet traffic from the private subnet to your network over the virtual Nat gateway (for example, nat-1a2b3c4d)
+The Main route table automatically comes with your VPC that is used by default for any subnet that isn’t explicitly associated with a routing table.
 
-9) VPN Gateway: Enables you to establish a secure connection between your VPC and your on-premises network.
+Custom Route Table:   
+Custom route table that you create for your VPC.   
+The first entry is the default entry for local routing in the VPC.   This entry enables the instances in the VPC to communicate with each other.   
+The second entry routes all other IPv4 subnet traffic from the public subnet to the internet over the internet gateway (for example, igw-1a2b3c4d
+The Destination is the pattern for where the packet is trying to end up and the Target is where the packet should go. For example, packets with a destination within 10.0.0.0/16 should be routed directly inside the VPC.   
+In the above VPC architecture, we have defined public and private route tables so let’s understand it.
 
-10) VPC Endpoints: Allow you to privately connect your VPC to supported AWS services and VPC endpoint services powered by AWS PrivateLink without requiring an Internet Gateway, NAT device, VPN connection, or AWS Direct Connect connection.
+Public Route Table — Routing to Internet Gateway: The route table which is directly associated with the Internet gateway is called the Public Route table. To make the route table public, we need to add routes destination 0.0.0.0 and Target the Internet Gateway id.
 
-11) AWS Direct Connect: Provides a dedicated network connection from your premises to AWS, enhancing security and reducing network costs.
+
+Private Route Table — Routing to Nat Gateway: The route table which is directly associated with the Nat gateway is called the Private Route table. To make the route table private, we need to add routes destination 0.0.0.0 and Target the Nat Gateway id.
+
+
+#### 4) NAT Gateway:
+
+NAT device enables instances in a private subnet to connect to the Internet or other AWS services but prevents the Internet from initiating connections with the instances.   
+NAT gateway always resides inside the public subnet of an Availability Zone.   
+Elastic IP must be attached to the NAT gateway while creating.   
+NAT devices do not support IPv6 traffic, use an egress-only Internet gateway instead.
+
+#### 5) Subnet:
+
+A subnet is a range of IP addresses in your VPC and it is a logical subdivision of the VPC network.   
+The practice of dividing a network into two or more networks is called subnetting.   
+AWS provides two types of subnetting one is Public which allows the internet to access the machine and another is private which is hidden from the internet.   
+A subnet is a span to a single availability zone.
+
+Public Subnet:   
+A public subnet is a subnet that’s associated with a route table (public route table) that has a route to an internet gateway.   
+Resources that reside within the public subnet can access the Internet with an Internet gateway.
+
+Private Subnet:   
+A public subnet is a subnet that’s associated with a route table (private route table) that has a route to a NAT gateway.   
+Resources that reside within the private subnet can access the Internet with a NAT gateway.   
+The resources from private subnet such as Mysql DB, private VM can’t be accessed directly from the internet.   
+We can use VPN as a service from AWS or can a bastion host in the public subnet to connect the resources in the private subnet.
+
+#### 6) VPC Security
+Security within a VPC is provided throughSecurity groups :   
+Acts at an Instance level firewall but not at the subnet level.   
+Each instance within a subnet can be assigned a different set of Security groups   
+Default Security Group allows all outbound traffic   
+In the Security group, we can specify only Allow rules, but not deny rules.   
+Security Groups are Stateful — If a request is allowed, the response for the request is automatically allowed.   
+
+#### 7) Network access control lists (ACLs):
+
+It is a security layer for your VPC which is applied on the subnet level.   
+stateless firewall — you need to allow both inbound and outbound traffic.   
+It is an optional layer for your VPC and can set up a Network ACL similar to the security group that adds an additional layer of security to your VPC.
+When you create VPC, it creates default Network ACL automatically which includes all inbound and outbound ipv4 traffic.   
+You can also create a custom network ACL and associates it with a subnet. By default, a custom Network ACL denies all the inbound and outbound ipv4 traffic until you add rules.   
+Act as a firewall for associated subnets, controlling both inbound and outbound traffic at the subnet level   
+
+VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces in the VPC and can help in monitoring the traffic or troubleshooting any connectivity issues.   
+Flow log data is stored using Amazon CloudWatch Logs.   
+Flow log can be created for the entire VPC, subnets, or each network interface. If enabled, for the entire VPC or subnet all the network interfaces are monitored
+Flow logs do not capture real-time log streams for network interfaces.
+
+
+#### 8) IP Addresses
+Instances launched in the VPC can have Private, Public, and Elastic IP address assigned to them.
+
+
+- Private IP Addresses:
+
+Private IP addresses are not reachable over the Internet and can be used for communication only between the instances within the VPC
+All instances are assigned a private IP address, within the IP address range of the subnet, to the default network interface   
+The private IP address is associated with the network interface for its lifetime, even when the instance is stopped and restarted and is released only when the instance is terminated   
+Additional Private IP addresses, known as secondary private IP address, can be assigned to the instances and these can be reassigned from one network interface to another
+
+- Public IP address:
+
+Public IP addresses are reachable over the Internet and can be used for communication between instances and the Internet.   
+The public IP address assigned to the Instance depends if the Public IP Addressing is enabled for the Subnet.   
+The public IP address can also be assigned to the Instance by enabling the Public IP addressing during the creation of the instance.   
+The public IP address is assigned from the AWS pool of IP addresses and it is not associated with the AWS account and hence is released when the instance is stopped and restarted or terminated.  
+
+- Elastic IP address:
+
+Elastic IP addresses are static, persistent public IP addresses that can be associated and disassociated with the instance, as required.
+The elastic IP address is allocated at a VPC and owned by the account unless released.
+A Network Interface can be assigned either a Public IP or an Elastic IP. If you assign an instance, already having a Public IP, an Elastic IP, the public IP is released.
+Elastic IP addresses can be moved from one instance to another, which can be within the same or different VPC within the same account
+Elastic IP is charged for non-usage i.e. if it is not associated or associated with a stopped instance or an unattached Network Interface
+
+
+#### 9) VPC Peering , VPN Gateway , VPC Endpoints , AWS Direct Connect
+VPC Peering : Allows you to connect one VPC with another VPC to route traffic between them using private IP addresses.
+
+VPN Gateway: Enables you to establish a secure connection between your VPC and your on-premises network.
+
+VPC Endpoints: Allow you to privately connect your VPC to supported AWS services and VPC endpoint services powered by AWS PrivateLink without requiring an Internet Gateway, NAT device, VPN connection, or AWS Direct Connect connection.
+
+AWS Direct Connect: Provides a dedicated network connection from your premises to AWS, enhancing security and reducing network costs.
 
 Example of Real-Life Applications:
 
@@ -49,8 +163,9 @@ Example of Real-Life Applications:
 2. Financial Institution's Data Warehouse: Create a secure data warehouse for financial data, ensuring compliance.
 3. Healthcare Organization's Research Environment: Establish a secure research environment for sensitive patient data.
 
+-----
+## Project Design Requirements:
 
-### Project Design Requirements:
 
 1. CIDR Block: 10.0.0.0/16.
 2. Region: us-west-2.
@@ -81,15 +196,13 @@ Security Groups are then configured to define instance-level security rules, con
 
 ### PROJECT TASK
 
-This README guides you through setting up an AWS VPC with 15 subnets, one per Availability Zone, Internet Gateway, routing table, NAT gateway, and Network ACL.
+This project task involves setting up an AWS VPC with 15 subnets, one per Availability Zone, Internet Gateway, routing table, NAT gateway, and Network ACL.
 
 
-TASK 1: Create VPC
-
-Create a new VPC with the specified CIDR block. It Defines the virtual network boundaries.
+#### TASK 1: Create VPC
+Create a new VPC with the specified CIDR block. It Defines the virtual network boundaries.   
 
 Steps:
-
 1. Log in to the AWS Management Console.
 2. Navigate to the VPC dashboard.
 3. Click "Create VPC".
@@ -98,7 +211,7 @@ Steps:
     - VPC name: 
 5. Click "Create VPC".
 
-TASK 2: Create Internet Gateway (IGW)
+#### TASK 2: Create Internet Gateway (IGW)
 
 Create an Internet Gateway to enable internet access. This provides internet connectivity to the VPC.
 
@@ -111,7 +224,7 @@ Steps:
 
 
 
-TASK 3: Create Subnets
+#### TASK 3: Create Subnets
 
 Create 15 subnets, one per Availability Zone. i.e Divide the VPC into smaller, isolated networks.
 
@@ -122,13 +235,7 @@ Steps:
 3. Enter details for each subnet:
 
 
-| Subnet Name | Availability Zone | CIDR Block | Type |
-| --- | --- | --- | --- |
-| Prod-Web-Public-2a | us-west-2a | 10.0.0.0/28 | Public |
-| ... | ... | ... | ... |
-
-
-TASK 4: Create Routing Table
+#### TASK 4: Create Routing Table
 
 Create a routing table for public subnets.
 This is required to define routing rules for the VPC.
@@ -142,8 +249,7 @@ Steps:
 
 
 
-
-TASK 5: Attach IGW to VPC
+#### TASK 5: Attach IGW to VPC
 
 Attach the IGW to the VPC. This enables internet access for the VPC.
 
@@ -156,8 +262,7 @@ Steps:
 
 
 
-
-TASK 6: Create NAT Gateway
+#### TASK 6: Create NAT Gateway
 
 Create a NAT gateway for private subnets.
 This enables outbound internet access for private subnets.
@@ -170,7 +275,7 @@ Steps:
 4. Click "Create NAT gateway".
 
 
-TASK 7: Configure Network ACL
+#### TASK 7: Configure Network ACL
 
 Configure Network ACL for subnets to control inbound and outbound traffic.
 
@@ -180,10 +285,10 @@ Steps:
 2. Click "Create network ACL".
 3. Enter a name for the network ACL.
 4. Configure inbound and outbound rules.
+     
 
 
-
-
+---
 ### DCUMENTATION
 
 -------------------------------------------------------
@@ -314,7 +419,7 @@ ALL THE ROUTING TABLE CREATED
 
 ----------------------------------------
 
-### TASK 5: CREATE NAT GATEWAY AND INTERNET GATEWAY
+### TASK 5: CREATE NAT GATEWAY
 
 ------------------------------------------
 
