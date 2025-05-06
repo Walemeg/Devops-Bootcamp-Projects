@@ -50,24 +50,7 @@ The README file documents the project, explaining its purpose, setup instruction
 
 #### PROJECT STRUCTURE*
 
-eliteoperation-app/
-├── .github/
-│   └── workflows/
-│       ├── ci.yml
-│       └── cd.yml
-├── app/
-│   ├── __init__.py
-│   ├── app.py
-│   └── requirements.txt
-├── tests/
-│   └── test_app.py
-├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   └── outputs.tf
-├── .gitignore
-├── pytest.ini
-└── README.md
+![alt text](<img/C1-S1 Project directory structure--3.PNG>)
 
 
 ---
@@ -76,64 +59,57 @@ eliteoperation-app/
 
 #### TASK 1: Project Setup
 ##### Step 1: Create the Directory Structure*
-- Purpose: This step creates a new directory for our project.
-- Command: mkdir eliteoperation-app
+- To creates a new directory for our project using command: mkdir eliteoperation-app]
 
 ##### Step 2: Write Application Code
-- Purpose: To creates a new file to write our application code.
-- Command: touch your_app/app.py
+- To creates a new file and write our application code in it. via command: touch your_app/app.py
 
 ##### Step 3: Run Tests Locally
-- Purpose: To installs dependencies and runs tests locally. Ensures everything is working as expected.
-- Command: pip install -r requirements.txt && pytest tests/
+- It involves installing dependencies and runing tests locally. Ensures everything is working as expected. use command : pip install -r requirements.txt && pytest tests/
 
 #### TASK 2: CI/CD Pipeline with GitHub Actions
 ##### Step 1: Configure GitHub Actions Workflow
-- Purpose: This step creates a new file for our GitHub Actions workflow for automate testing, building, and deployment.
-- Command: touch .github/workflows/ci.yml
+- To creates a new file for our GitHub Actions workflow for automate testing, building, and deployment. Use command: touch .github/workflows/ci.yml
 
 ##### Step 2: Push to GitHub
-- Purpose: Push code to GitHub to trigger the GitHub Actions workflow.
-- Command: git add . && git commit -m "Initial commit" && git push origin main
+- Push code to GitHub to trigger the GitHub Actions workflow using the commands: git add . && git commit -m "Initial commit" && git push origin main
 
 #### TASK 3: Infrastructure as Code (IaC) with Terraform
 ##### Step 1: Create Terraform Configuration Files
-- Purpose: creates new files for our Terraform configuration to manage cloud infrastructure on AWS.
-- Command: touch terraform/main.tf terraform/variables.tf terraform/outputs.tf
+- Involves creating new files for our Terraform configuration to manage cloud infrastructure on AWS. Use command : touch terraform/main.tf terraform/variables.tf terraform/outputs.tf
 
 ##### Step 2: Run Terraform Lifecycle
-- Purpose:  This step initializes and applies the Terraform configuration to create AWS instances.
-- Command: terraform init && terraform apply
+- To initialize and apply the Terraform configuration to create AWS instances using command: terraform init && terraform apply
 
 #### TASK 4: Security and Documentation
 ##### Step 1: Store AWS Credentials Securely
-- Purpose: Store AWS credentials securely using GitHub Secrets.
+- To Store AWS credentials securely using GitHub Secrets.
 
 ##### Step 2: Add, Commit, and Push New Additions to GitHub
-- Purpose: Update the repository with new changes.
-- Command: git add . && git commit -m "Updated README and Terraform files" && git push origin main
+- To update the repository with new changes using command: git add . && git commit -m "Updated 1" && git push origin main
 
 ---
 ### DETAILED TASK IMPLEMENTATION
 ---
-#### 1: PROJECT SETUP*
+#### TASK 1: PROJECT SETUP
 
 ---
 
-#### 1: Create the Directory Structure*
+#### STEP 1: Create the Directory Structure*
 Using the commands below, I created a structure for the application by first creating a new directory for our project and organizing it into folders for the 
 application code, tests, Terraform scripts, and GitHub workflows.
-- *Commands*:   mkdir eliteoperation-app
+
+- *Commands*:   
+mkdir eliteoperation-app
+
   cd eliteoperation-app
+
   mkdir app tests terraform .github/workflows
+
   
-- *Output*: A directory structure like this:
-  
-  eliteoperation-app/
-  ├── app/
-  ├── tests/
-  ├── terraform/
-  └── .github/workflows/
+  ![alt text](img/AA.PNG)
+
+
 
   ![alt text](<img/C1-S1 Project directory structure.PNG>)
  ![alt text](<img/C1-S1 Project directory structure_PC_2.PNG>)
@@ -141,7 +117,7 @@ application code, tests, Terraform scripts, and GitHub workflows.
 
 ---
 
-#### Step 2: Write Application Code
+#### STEP 2: Write Application Code
  This step creates a new file for our application code. The app.py file contains simple functions for addition and multiplication.
 
 - *Commands*:
@@ -279,13 +255,19 @@ touch .github/workflows/cd.yml  and write the code below in it.
 This step uploads the project to GitHub, triggering the CI/CD pipelines defined in the .github/workflows folder.
 
 - *Commands*:
-  bash
+
   git init
+
   git add .
+
   git commit -m "Initial commit"
+
   git branch -M main
+
   git remote add origin https://github.com/Walemeg/eliteoperation-app.git
+
   git push -u origin main
+
   
 ![alt text](<img/C2-S2 push to Github repository_forced pushed.PNG>)
 
@@ -364,7 +346,7 @@ This step initializes Terraform and provisions the AWS resources defined in the 
 
 ---
 
-### *CATEGORY 4: FINALISING AND PUSHING TO GITHUB*
+### TASK 4: FINALISING AND PUSHING TO GITHUB
 
 ---
 
